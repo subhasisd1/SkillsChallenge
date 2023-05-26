@@ -4,6 +4,8 @@ import { TableComponent } from '../table/table.component';
 import { TableData } from '../table-data';
 import { ThingsService } from './things.service';
 import { QuickSearchDirective } from '../quick-search.directive';
+import { OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-things',
@@ -12,7 +14,7 @@ import { QuickSearchDirective } from '../quick-search.directive';
   templateUrl: './things.component.html',
   styleUrls: ['./things.component.css']
 })
-export class ThingsComponent implements OnInit {
+export class ThingsComponent implements OnInit,OnDestroy {
   isLoading = true;
   rows!: { [key: string]: any }[];
   readonly columns: TableData[] = [
@@ -25,6 +27,8 @@ export class ThingsComponent implements OnInit {
       PropName: 'name'
     }
   ];
+
+  subscription: Subscription = new Subscription;
 
   constructor(private service: ThingsService, private cd: ChangeDetectorRef) {
 
@@ -40,6 +44,10 @@ export class ThingsComponent implements OnInit {
       this.isLoading = false;
       this.cd.detectChanges();
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
