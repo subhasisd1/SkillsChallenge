@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit,OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableData } from '../table-data';
 import { ThemeChanger } from '../app.module';
+import { BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -11,7 +13,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit,OnDestroy {
   @Input() columns: TableData[] = [];
   @Input() rows: { [key: string]: any }[] = [];
 
@@ -24,5 +26,9 @@ export class TableComponent implements OnInit {
       this.color = val;
       this.cd.detectChanges();
     });
+  }
+
+  ngOnDestroy() {
+
   }
 }
